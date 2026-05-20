@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>碳足迹标识｜山西祁县推光漆玻璃茶具</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{primary:'#40916c'}}}}
+</script>
+<style>
+body{background:#f5f7fa}
+.tab-active{background:#40916c;color:white}
+.tab-inactive{background:#e5e7eb;color:#374151}
+.product-video{width:100%;border-radius:0.5rem;margin-bottom:1rem;aspect-ratio:16/9;object-fit:cover;}
+</style>
+</head>
+<body class="min-h-screen text-sm">
+
+<header class="bg-primary text-white py-3 px-4 shadow">
+  <div class="flex justify-between items-center">
+    <h1 class="text-base font-bold">碳足迹标识信息系统</h1>
+    <span class="text-xs">在线｜实时</span>
+  </div>
+</header>
+
+<main class="px-3 py-4 max-w-lg mx-auto">
+  <div class="mb-4">
+    <h2 class="text-base font-semibold">山西祁县推光漆玻璃茶具</h2>
+    <p class="text-xs text-gray-500 mt-1">评估方法：IPCC 2013 GWP 100</p>
+  </div>
+
+  <!-- 极速优化：预加载+静音+自动+循环+内联播放 -->
+  <video class="product" autoplay loop muted playsinline preload="auto">
+    <source src="video.mp4" type="video/mp4">
+    您的浏览器不支持视频播放
+  </video>
+
+  <section class="bg-white rounded-lg shadow p-3 mb-4">
+    <h3 class="text-sm font-semibold mb-2">生命周期碳足迹构成（kgCO₂e/件）</h3>
+    <div id="lifeCycleBar" style="width:100%;height:260px;"></div>
+    <p class="text-xs text-gray-500 mt-2">合计：0.6390 kgCO₂e/件</p>
+  </section>
+
+  <section class="bg-white rounded-lg shadow p-3 mb-4">
+    <h3 class="text-sm font-semibold mb-2">分时单件碳足迹</h3>
+    <div class="flex gap-2 mb-3">
+      <button id="tabP" class="tab-active flex-1 py-2 rounded text-xs" onclick="switchTab('p')">峰段 735.6g</button>
+      <button id="tabF" class="tab-inactive flex-1 py-2 rounded text-xs" onclick="switchTab('f')">平段 734.4g</button>
+      <button id="tabV" class="tab-inactive flex-1 py-2 rounded text-xs" onclick="switchTab('v')">谷段 733.2g</button>
+    </div>
+    <div id="detailP" class="bg-gray-50 rounded p-2 text-xs">
+      <p>时段：10:00–15:00｜网电：24000kWh｜企业电碳因子：0.2032</p>
+      <p class="text-green-700 mt-1">单件总碳：0.7356 kgCO₂e</p>
+    </div>
+    <div id="detailF" class="bg-gray-50 rounded p-2 text-xs hidden">
+      <p>时段：07:00–10/15–19｜网电：32000kWh｜企业电碳因子：0.2311</p>
+      <p class="text-green-700 mt-1">单件总碳：0.7344 kgCO₂e</p>
+    </div>
+    <div id="detailV" class="bg-gray-50 rounded p-2 text-xs hidden">
+      <p>时段：19:00–次日07｜网电：24000kWh｜企业电碳因子：0.1434</p>
+      <p class="text-green-700 mt-1">单件总碳：0.7332 kgCO₂e</p>
+    </div>
+    <div id="carbonBar" style="width:100%;height:200px;margin-top:10px;"></div>
+  </section>
+
+  <section class="bg-white rounded-lg shadow p-3 mb-4">
+    <h3 class="text-sm font-semibold mb-2">分时用电（kWh/日）</h3>
+    <div id="powerBar" style="width:100%;height:200px;"></div>
+    <div class="flex gap-4 mt-2 text-xs">
+      <span>■ 网供</span><span>■ 光伏（绿证0排放）</span>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-lg shadow p-3 mb-4">
+    <h3 class="text-sm font-semibold mb-2">排放因子对比（kgCO₂e/kWh）</h3>
+    <div id="factorLine" style="width:100%;height:200px;"></div>
+  </section>
+
+</main>
+
+<script>
+// 图表初始化
+const lifeCycle=echarts.init(document.getElementById('lifeCycleBar'));
+lifeCycle.setOption({
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+  grid:{left:'5%',right:'5%',bottom:'25%'},
+  xAxis:{
+    type:'category',
+    data:['原料生产','回收预处理','熔制环节','成型环节','原料进厂运输','成品短途运输','辅料分摊','回收减碳'],
+    axisLabel:{rotate:45,fontSize:10}
+  },
+  yAxis:{type:'value',name:'kgCO₂e'},
+  series:[{
+    type:'bar',
+    data:[
+      {value:0.6300,itemStyle:{color:'#40916c'}},
+      {value:0.0145,itemStyle:{color:'#40916c'}},
+      {value:0.1404,itemStyle:{color:'#40916c'}},
+      {value:0.0203,itemStyle:{color:'#40916c'}},
+      {value:0.0065,itemStyle:{color:'#40916c'}},
+      {value:0.0043,itemStyle:{color:'#40916c'}},
+      {value:0.0120,itemStyle:{color:'#40916c'}},
+      {value:-0.1890,itemStyle:{color:'#e53e3e'}}
+    ],
+    label:{show:true,position:p=>p.value>=0?'top':'bottom',fontSize:9}
+  }]
+});
+
+const carbon=echarts.init(document.getElementById('carbonBar'));
+carbon.setOption({
+  tooltip:{trigger:'axis'},
+  xAxis:{type:'category',data:['峰段','平段','谷段']},
+  yAxis:{type:'value',name:'gCO₂e',min:700,max:750},
+  series:[{
+    type:'bar',
+    data:[735.6,734.4,733.2],
+    itemStyle:{color:'#40916c'},
+    label:{show:true,position:'top',formatter:'{c}g'}
+  }]
+});
+
+const power=echarts.init(document.getElementById('powerBar'));
+power.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['网供','光伏'],top:0,textStyle:{fontSize:10}},
+  xAxis:{type:'category',data:['峰段','平段','谷段']},
+  yAxis:{type:'value',name:'kWh'},
+  series:[
+    {name:'网供',type:'bar',stack:'total',data:[24000,32000,24000],itemStyle:{color:'#3b82f6'}},
+    {name:'光伏',type:'bar',stack:'total',data:[99,132,99],itemStyle:{color:'#22c55e'}}
+  ]
+});
+
+const factor=echarts.init(document.getElementById('factorLine'));
+factor.setOption({
+  tooltip:{trigger:'axis'},
+  legend:{data:['电网因子','企业因子'],top:0,textStyle:{fontSize:10}},
+  xAxis:{type:'category',data:['峰段','平段','谷段']},
+  yAxis:{type:'value',name:'kgCO₂e/kWh',min:0,max:0.8},
+  series:[
+    {name:'电网因子',type:'line',data:[0.680,0.580,0.480],itemStyle:{color:'#8b5cf6'}},
+    {name:'企业因子',type:'line',data:[0.2032,0.2311,0.1434],itemStyle:{color:'#06b6d4'}}
+  ]
+});
+
+function switchTab(t){
+  ['p','f','v'].forEach(x=>{
+    document.getElementById('detail'+x.toUpperCase()).classList.add('hidden');
+    document.getElementById('tab'+x.toUpperCase()).classList.remove('tab-active');
+    document.getElementById('tab'+x.toUpperCase()).classList.add('tab-inactive');
+  });
+  document.getElementById('detail'+t.toUpperCase()).classList.remove('hidden');
+  document.getElementById('tab'+t.toUpperCase()).classList.remove('tab-inactive');
+  document.getElementById('tab'+t.toUpperCase()).classList.add('tab-active');
+}
+
+window.addEventListener('resize',()=>{
+  lifeCycle.resize();carbon.resize();power.resize();factor.resize();
+});
+</script>
+
+</body>
+</html>
